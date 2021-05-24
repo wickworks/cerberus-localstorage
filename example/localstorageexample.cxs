@@ -1,0 +1,59 @@
+Strict
+
+Import mojo
+Import localstorage
+
+Class Game Extends App
+	Field value:Int = 100
+	Field lastKeyPress:String
+
+	Method OnCreate:Int()
+		Local loadedValue:String = LoadLocalStorage("currentValue")
+		If loadedValue <> "" Then value = Int(loadedValue)
+		
+		lastKeyPress = LoadLocalStorage("lastKeyPress")
+
+		Print "Starting value : " + value
+		Print "Starting last key press : " + lastKeyPress
+		Return 0
+	End
+	
+	Method OnUpdate:Int()
+		If KeyHit(KEY_UP)
+			value += 1
+			SaveLocalStorage("currentValue", String(value))
+			
+			lastKeyPress = "UP"
+			SaveLocalStorage("lastKeyPress", lastKeyPress)
+			
+			Print "UP value :   " + value
+		Endif
+		
+		If KeyHit(KEY_DOWN)
+			value -= 1
+			SaveLocalStorage("currentValue", String(value))
+			
+			lastKeyPress = "DOWN"
+			SaveLocalStorage("lastKeyPress", lastKeyPress)
+			
+			Print "DOWN value : " + value
+		Endif
+
+		Return 0
+	End
+
+	Method OnRender:Int()
+		Cls 0,0,0
+		SetColor 255,255,255
+		DrawText "[UP] to increase | [DOWN] to decrease", 0,0
+		DrawText "Values should be preserved between page reloads", 0,30
+		DrawText "Current value: " + value, 0,60
+		DrawText "Last key pressed: " + lastKeyPress, 0,90
+		Return 0
+	End
+End
+
+Function Main:Int()
+	New Game
+	Return 0
+End

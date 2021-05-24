@@ -1,0 +1,11 @@
+
+#If TARGET="html5"
+	Import "native/localstorage.js"
+#Else
+	#Error "The localstorage module is only available on the html5 target"
+#Endif
+
+Extern
+
+Function SaveLocalStorage(key:String, value:String)
+Function LoadLocalStorage(key:String)
